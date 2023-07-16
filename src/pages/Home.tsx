@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import background from "../assets/subtle-prism.png";
 
 export default function Home() {
+	const [accountId, setAccountId] = useState<number>(0);
+
+	function sendId(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+
+		console.log("it works");
+	}
+
 	return (
 		<Body>
 			<Title>
 				<First>Extrato</First>
 				<Second>Bank</Second>
 			</Title>
+			<Subtitle>
+                Sua vida financeira sob controle!
+			</Subtitle>
 			<WelcomeMessage>
-        Sua vida financeira sob controle! <br /> Digite o ID da sua conta para
-        acessar todas as suas transações no ExtratoBank.
+                Digite o ID da sua conta para acessar todas as suas transações no ExtratoBank.
 			</WelcomeMessage>
-			<StyledForm>
+			<StyledForm onSubmit={sendId}>
 				<Input type="text" placeholder="Digite seu ID de conta..." />
-				<SubmitButton>Buscar</SubmitButton>
+				<SubmitButton type="submit">Buscar</SubmitButton>
 			</StyledForm>
 		</Body>
 	);
@@ -51,30 +61,36 @@ const Second = styled.span`
     font-weight: 400;
 `;
 
-const WelcomeMessage = styled.p`
-    color: #0d47a1;
-    margin-top: 2rem;
-    font-size: 1.5rem;
-    text-align: center;
-    line-height: 1.5rem;
-    animation: slideIn 2s forwards;
+const Subtitle = styled.h2`
+    color:  #4d82b8;
+    margin-top: 0.5rem;
+    font-size: 2rem;
+`;
 
+const slideIn = `
     @keyframes slideIn {
         0% {
-            opacity: 0;
-            transform: translateX(-50px);
+        opacity: 0;
+        transform: translateX(-50px);
         }
         100% {
-            opacity: 1;
-            transform: translateX(0);
+        opacity: 1;
+        transform: translateX(0);
         }
     }
+`;
+
+const WelcomeMessage = styled.p`
+    color:  #4d82b8;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
 `;
 
 const StyledForm = styled.form`
     display: flex;
     align-items: center;
-    margin-top: 2.5rem;
+    margin-top: 1rem;
 `;
 
 const Input = styled.input`
