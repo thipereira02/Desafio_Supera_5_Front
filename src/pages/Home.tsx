@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+
 import background from "../assets/subtle-prism.png";
+import { getTransfers } from "../services/requests";
 
 export default function Home() {
-	const [accountId, setAccountId] = useState<number>(0);
+	const [accountId, setAccountId] = useState<string>("");
 
 	function sendId(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
+		const accountIdNumber = Number(accountId);
 
-		console.log("it works");
+		const req = getTransfers(accountIdNumber);
+		req.then((res) => {
+			console.log(res.data);
+		}
+		).catch((err) => {
+			toast.error("Não foi possível encontrar o ID da conta!");
+			console.log(err);
+			setAccountId("");
+		});
 	}
 
 	return (
@@ -24,7 +36,12 @@ export default function Home() {
                 Digite o ID da sua conta para acessar todas as suas transações no ExtratoBank.
 			</WelcomeMessage>
 			<StyledForm onSubmit={sendId}>
-				<Input type="text" placeholder="Digite seu ID de conta..." />
+				<Input 
+					type="number" 
+					placeholder="Digite seu ID de conta..." 
+					value={accountId}
+					onChange={(event) => setAccountId(String(event.target.value))}
+				/>
 				<SubmitButton type="submit">Buscar</SubmitButton>
 			</StyledForm>
 		</Body>
@@ -67,19 +84,6 @@ const Subtitle = styled.h2`
     font-size: 2rem;
 `;
 
-const slideIn = `
-    @keyframes slideIn {
-        0% {
-        opacity: 0;
-        transform: translateX(-50px);
-        }
-        100% {
-        opacity: 1;
-        transform: translateX(0);
-        }
-    }
-`;
-
 const WelcomeMessage = styled.p`
     color:  #4d82b8;
     margin-top: 2rem;
@@ -100,6 +104,11 @@ const Input = styled.input`
     font-size: 1rem;
     outline: none;
     flex: 1;
+    &[type="number"]::-webkit-inner-spin-button,
+    &[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 `;
 
 const SubmitButton = styled.button`
