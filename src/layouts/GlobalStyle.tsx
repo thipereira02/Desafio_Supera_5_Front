@@ -4,6 +4,7 @@
 */
 
 import { createGlobalStyle } from "styled-components";
+import background from "../assets/subtle-prism.png";
 
 const GlobalStyle = createGlobalStyle`
 	html, body, div, span, applet, object, iframe,
@@ -34,6 +35,10 @@ const GlobalStyle = createGlobalStyle`
 	body {
 		line-height: 1;
 		font-family: "Nunito", sans-serif;
+		background-image: url(${background});
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 	ol, ul {
 		list-style: none;

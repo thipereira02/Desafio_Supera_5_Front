@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 
-import background from "../assets/subtle-prism.png";
 import { getTransfers } from "../services/requests";
 
 export default function Home() {
+	const navigate = useNavigate();
 	const [accountId, setAccountId] = useState<string>("");
 
 	function sendId(event: React.FormEvent<HTMLFormElement>) {
@@ -15,6 +16,7 @@ export default function Home() {
 		const req = getTransfers(accountIdNumber);
 		req.then((res) => {
 			console.log(res.data);
+			navigate("/statement", { state: { transfers: res.data } });
 		}
 		).catch((err) => {
 			toast.error("Não foi possível encontrar o ID da conta!");
@@ -49,10 +51,6 @@ export default function Home() {
 }
 
 const Body = styled.div`
-    background-image: url(${background});
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     width: 100%;
     height: 100vh;
     display: flex;
