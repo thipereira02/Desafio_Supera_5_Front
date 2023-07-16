@@ -1,14 +1,11 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Transfers from "../components/Transfers";
 
 export default function Statement() {
-	const location = useLocation();
-	const transfers = location.state.transfers || [];
-
 	const { control, handleSubmit } = useForm();
 
 	function onSubmit (data: unknown) {
@@ -64,6 +61,7 @@ export default function Statement() {
 
 				<SubmitButton type="submit">Pesquisar</SubmitButton>
 			</FormContainer>
+			<Transfers />
 		</Body>
 	);
 }

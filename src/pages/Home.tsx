@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 
 import { getTransfers } from "../services/requests";
+import TransfersContext from "../contexts/TransfersContext";
 
 export default function Home() {
-	const navigate = useNavigate();
 	const [accountId, setAccountId] = useState<string>("");
+	const { setTransfers } = useContext(TransfersContext);
+	const navigate = useNavigate();
 
 	function sendId(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -15,8 +17,8 @@ export default function Home() {
 
 		const req = getTransfers(accountIdNumber);
 		req.then((res) => {
-			console.log(res.data);
-			navigate("/statement", { state: { transfers: res.data } });
+			setTransfers(res.data);
+			navigate("/statement");
 		}
 		).catch((err) => {
 			toast.error("Não foi possível encontrar o ID da conta!");
