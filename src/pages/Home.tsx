@@ -8,7 +8,7 @@ import TransfersContext from "../contexts/TransfersContext";
 
 export default function Home() {
 	const [accountId, setAccountId] = useState<string>("");
-	const { setTransfers } = useContext(TransfersContext);
+	const { setTransfersData } = useContext(TransfersContext);
 	const navigate = useNavigate();
 
 	function sendId(event: React.FormEvent<HTMLFormElement>) {
@@ -17,7 +17,7 @@ export default function Home() {
 
 		const req = getTransfers(accountIdNumber);
 		req.then((res) => {
-			setTransfers(res.data);
+			setTransfersData(res.data);
 			navigate("/statement");
 		}
 		).catch((err) => {

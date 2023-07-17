@@ -8,11 +8,13 @@ import Home from "./pages/Home";
 import Statement from "./pages/Statement";
 import TransfersContext from "./contexts/TransfersContext";
 
-import { TransferItem } from "./interfaces/types";
+import { TransfersData } from "./interfaces/types";
 
 function App() {
-	const [transfers, setTransfers] = useState([] as TransferItem[]);
-	console.log(transfers);
+	const [transfersData, setTransfersData] = useState<TransfersData>({
+		transfers: [],
+		totalBalance: 0
+	});
 
 	return (
 		<BrowserRouter>
@@ -29,7 +31,7 @@ function App() {
 				pauseOnHover
 				theme="dark"
 			/>
-			<TransfersContext.Provider value={{ transfers, setTransfers }}>
+			<TransfersContext.Provider value={{ transfersData, setTransfersData }}>
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/statement" element={<Statement />} />

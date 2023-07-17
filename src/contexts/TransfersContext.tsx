@@ -1,12 +1,12 @@
 import { createContext } from "react";
 
-import { TransferItem } from "../interfaces/types";
+import { TransfersData } from "../interfaces/types";
 
 interface TransfersContextProps {
-    transfers: TransferItem[];
-    setTransfers: (transfers: TransferItem[]) => void;
+    transfersData: TransfersData;
+    setTransfersData: (transfersData: TransfersData) => void;
 }
 
-const TransfersContext = createContext({} as TransfersContextProps);
+const TransfersContext = createContext<TransfersContextProps>({} as TransfersContextProps);
 
 export default TransfersContext;

@@ -1,11 +1,11 @@
-export interface TransferItem {
-	idTransferencia: number;
+interface Transfer {
 	dataTransferencia: string;
 	valor: number;
 	tipo: string;
 	nomeOperadorTransacao: string | null;
-	conta: {
-		idConta: number;
-		nomeResponsável: string;
-	};
+}
+
+export interface TransfersData {
+	transfers: Transfer[];
+	totalBalance: number;
 }
