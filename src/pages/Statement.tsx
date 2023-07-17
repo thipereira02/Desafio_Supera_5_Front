@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Transfers from "../components/Transfers";
 import TransfersContext from "../contexts/TransfersContext";
 import OriginalTransfersContext from "../contexts/OriginalTransfersContext";
-import { getTransfersByDate } from "../services/requests";
+import { getTransferByDateAndOperator, getTransferByOperatorName, getTransfersByDate } from "../services/requests";
 
 export default function Statement() {
 	const { transfersData, setTransfersData } = useContext(TransfersContext);
@@ -20,26 +20,51 @@ export default function Statement() {
 	const { control, handleSubmit, watch, reset } = useForm();
 
 	function onSubmit() {
-		const startDate = watch("startDate");
-		const endDate = watch("endDate");
+		const formData = {
+			startDate: watch("startDate"),
+			endDate: watch("endDate"),
+			operatorName: watch("operatorName"),
+		};
 
-		if (startDate && endDate && startDate > endDate) {
-			toast.error("A data de início não pode ser maior que a data de fim!");
-			return;
-		}
+		const { startDate, endDate, operatorName } = formData;
 
-		const req = getTransfersByDate(accountId, startDate, endDate);
-		req.then((res) => {
-			setTransfersData({
-				...transfersData,
-				transfers: res.data,
-			});
-			setIsFilterApplied(true);
-		}
-		).catch((err) => {
-			toast.error("Ocorreu um erro ao buscar as transações! Tente novamente.");
-			console.log(err);
-		});
+		if (startDate && endDate && operatorName) {
+			getTransferByDateAndOperator(accountId, startDate, endDate, operatorName)
+				.then((res) => {
+					setTransfersData({
+						...transfersData,
+						transfers: res.data,
+					});
+					setIsFilterApplied(true);
+				}).catch((err) => {
+					toast.error("Ocorreu um erro ao buscar as transações! Tente novamente.");
+					console.log(err);
+				});
+		} else if (startDate && endDate) {
+			getTransfersByDate(accountId, startDate, endDate)
+				.then((res) => {
+					setTransfersData({
+						...transfersData,
+						transfers: res.data,
+					});
+					setIsFilterApplied(true);
+				}).catch((err) => {
+					toast.error("Ocorreu um erro ao buscar as transações! Tente novamente.");
+					console.log(err);
+				});
+		} else if (operatorName) {
+			getTransferByOperatorName(accountId, operatorName)
+				.then((res) => {
+					setTransfersData({
+						...transfersData,
+						transfers: res.data,
+					});
+					setIsFilterApplied(true);
+				}).catch((err) => {
+					toast.error("Ocorreu um erro ao buscar as transações! Tente novamente.");
+					console.log(err);
+				});
+		}		
 	}
 
 	function handleClearFilters() {
