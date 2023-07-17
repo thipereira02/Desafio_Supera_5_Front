@@ -20,7 +20,15 @@ export default function Statement() {
 	const { control, handleSubmit, watch, reset } = useForm();
 
 	function onSubmit() {
-		const req = getTransfersByDate(accountId, watch("startDate"), watch("endDate"));
+		const startDate = watch("startDate");
+		const endDate = watch("endDate");
+
+		if (startDate && endDate && startDate > endDate) {
+			toast.error("A data de início não pode ser maior que a data de fim!");
+			return;
+		}
+
+		const req = getTransfersByDate(accountId, startDate, endDate);
 		req.then((res) => {
 			setTransfersData({
 				...transfersData,
