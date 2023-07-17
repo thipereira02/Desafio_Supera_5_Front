@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
 
@@ -6,7 +6,14 @@ import TransfersContext from "../contexts/TransfersContext";
 
 export default function Transfers() {
 	const { transfersData } = useContext(TransfersContext);
-	const periodBalance = transfersData.transfers.reduce((acc, transfer) => acc + transfer.valor, 0).toLocaleString("pt-BR");
+	const [periodBalance, setPeriodBalance] = useState("0");
+	
+	useEffect(() => {
+		const newPeriodBalance = transfersData.transfers.length
+			? transfersData.transfers.reduce((acc, transfer) => acc + transfer.valor, 0).toLocaleString("pt-BR")
+			: "0";
+		setPeriodBalance(newPeriodBalance);
+	}, [transfersData.transfers]);
 
 	return (
 		<TableContainer>

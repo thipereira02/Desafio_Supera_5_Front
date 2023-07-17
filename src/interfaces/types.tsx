@@ -1,4 +1,4 @@
-interface Transfer {
+export interface Transfer {
 	dataTransferencia: string;
 	valor: number;
 	tipo: string;

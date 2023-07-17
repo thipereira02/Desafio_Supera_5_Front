@@ -5,10 +5,12 @@ import { toast } from "react-toastify";
 
 import { getTransfers } from "../services/requests";
 import TransfersContext from "../contexts/TransfersContext";
+import OriginalTransfersContext from "../contexts/OriginalTransfersContext";
 
 export default function Home() {
 	const [accountId, setAccountId] = useState<string>("");
 	const { setTransfersData } = useContext(TransfersContext);
+	const { setOriginalTransfers } = useContext(OriginalTransfersContext);
 	const navigate = useNavigate();
 
 	function sendId(event: React.FormEvent<HTMLFormElement>) {
@@ -18,6 +20,7 @@ export default function Home() {
 		const req = getTransfers(accountIdNumber);
 		req.then((res) => {
 			setTransfersData(res.data);
+			setOriginalTransfers([...res.data.transfers]);
 			toast.success("ID da conta encontrado! Aqui estão suas transações.");
 			navigate("/statement", { state: { accountId: accountIdNumber }});
 		}

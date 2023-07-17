@@ -8,13 +8,15 @@ import Home from "./pages/Home";
 import Statement from "./pages/Statement";
 import TransfersContext from "./contexts/TransfersContext";
 
-import { TransfersData } from "./interfaces/types";
+import { TransfersData, Transfer } from "./interfaces/types";
+import OriginalTransfersContext from "./contexts/OriginalTransfersContext";
 
-function App() {
+export default function App() {
 	const [transfersData, setTransfersData] = useState<TransfersData>({
 		transfers: [],
 		totalBalance: 0
 	});
+	const [originalTransfers, setOriginalTransfers] = useState<Transfer[]>([]);
 
 	return (
 		<BrowserRouter>
@@ -32,13 +34,13 @@ function App() {
 				theme="dark"
 			/>
 			<TransfersContext.Provider value={{ transfersData, setTransfersData }}>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/statement" element={<Statement />} />
-				</Routes>
+				<OriginalTransfersContext.Provider value={{ originalTransfers, setOriginalTransfers }}>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/statement" element={<Statement />} />
+					</Routes>
+				</OriginalTransfersContext.Provider>
 			</TransfersContext.Provider>
 		</BrowserRouter>
 	);
 }
-
-export default App;
