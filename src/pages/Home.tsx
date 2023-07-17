@@ -18,7 +18,8 @@ export default function Home() {
 		const req = getTransfers(accountIdNumber);
 		req.then((res) => {
 			setTransfersData(res.data);
-			navigate("/statement");
+			toast.success("ID da conta encontrado! Aqui estão suas transações.");
+			navigate("/statement", { state: { accountId: accountIdNumber }});
 		}
 		).catch((err) => {
 			toast.error("Não foi possível encontrar o ID da conta!");

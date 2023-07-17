@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 import Transfers from "../components/Transfers";
+import TransfersContext from "../contexts/TransfersContext";
+import { getTransfersByDate } from "../services/requests";
 
 export default function Statement() {
-	const { control, handleSubmit } = useForm();
+	const { transfersData, setTransfersData } = useContext(TransfersContext);
+	const location = useLocation();
+	const accountId = location.state.accountId;
+	const { control, handleSubmit, watch } = useForm();
 
-	function onSubmit (data: unknown) {
-		console.log(data);
+	function onSubmit() {
+		const req = getTransfersByDate(accountId, watch("startDate"), watch("endDate"));
+		req.then((res) => {
+			setTransfersData({
+				...transfersData,
+				transfers: res.data,
+			});
+		}
+		).catch((err) => {
+			toast.error("Ocorreu um erro ao buscar as transações! Tente novamente.");
+			console.log(err);
+		});
 	}
 
 	return (

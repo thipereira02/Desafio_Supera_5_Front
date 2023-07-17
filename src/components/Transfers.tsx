@@ -8,7 +8,6 @@ export default function Transfers() {
 	const { transfersData } = useContext(TransfersContext);
 	const periodBalance = transfersData.transfers.reduce((acc, transfer) => acc + transfer.valor, 0).toLocaleString("pt-BR");
 
-
 	return (
 		<TableContainer>
 			<tbody>
